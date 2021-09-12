@@ -12,3 +12,4 @@ for i in range(0,n):
             print("*", end="")
         print("")
     n -= 1
+    n = n+1
