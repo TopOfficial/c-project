@@ -4,7 +4,7 @@
 #include <string.h>
 
 int idx = 0;
-int money = 500;
+int money = 600;
 int bet = 0;
 
 struct Card {
