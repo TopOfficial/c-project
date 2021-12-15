@@ -1,12 +1,10 @@
 #include <stdio.h>
-#include <time.h>
 #include <stdlib.h>
 #include <string.h>
 
 int idx = 0;
-int money = 600;
-int bet = 0;
-
+int money = 600;    // MONEY SET DEFAULT 500
+int bet = 0;       //  SET VALUE 0 BET 
 struct Card {
 	int type;
 	int score;
@@ -20,7 +18,7 @@ struct Player{
  
 }P1, P2;
 
-int shuffle(struct Card cards[])
+int shuffle(struct Card cards[]) //SHUFFLES CARD IN THE DECKS 
 {
 	int i, j;
 	for (i=0;i<52;i++){
@@ -28,7 +26,7 @@ int shuffle(struct Card cards[])
 		desk[i].score = i%13 + 1;
 	}
 		
-	srand(time(NULL));
+	srand(time(NULL)); 
 	for (i = 0; i < 52; i++)
 	{
 		do{
@@ -43,7 +41,7 @@ int shuffle(struct Card cards[])
 	return 0;
 }
 
-int convert_jkq(struct Card card)
+int convert_jkq(struct Card card)    // CONVERT CARD TO J K Q -> VALUE = 10
 {
 	if((card.score==11) ||(card.score==12) ||(card.score==13)){
 		return 10;
@@ -52,7 +50,7 @@ int convert_jkq(struct Card card)
 	}	
 }
 
-int get_score(struct Card card){
+int get_score(struct Card card){    
 	int score;
 	
 	if(card.score == 1){
@@ -100,40 +98,40 @@ struct Card pick(char player_name[50]){
 	return cards[idx];
 }
 
-void display(struct Card card)
+void display(struct Card card) // DISPLAY A CARD SCORE 
 {
 	if(card.score == 1 ){
 		printf("*******\n");
 		printf("*     *\n");
-		printf("* %c   *\n", card.type);
+		printf("* %c  *\n", card.type);
 		printf("*   A *\n");
 		printf("*     *\n");
 		printf("*******\n");
 	}else if(card.score >= 2 && card.score <= 10){
 		printf("*******\n");
 		printf("*     *\n");
-		printf("* %c   *\n", card.type);
+		printf("* %c  *\n", card.type);
 		printf("*  %2d *\n", card.score);
 		printf("*     *\n");
 		printf("*******\n");
 	}else if(card.score == 11){
 		printf("*******\n");
 		printf("*     *\n");
-		printf("* %c   *\n", card.type);
+		printf("* %c  *\n", card.type);
 		printf("*   J *\n");
 		printf("*     *\n");
 		printf("*******\n");
 	}else if(card.score == 12){
 		printf("*******\n");
 		printf("*     *\n");
-		printf("* %c   *\n", card.type);
+		printf("* %c  *\n", card.type);
 		printf("*   Q *\n");
 		printf("*     *\n");
 		printf("*******\n");
 	}else if(card.score == 13){
 		printf("*******\n");
 		printf("*     *\n");
-		printf("* %c   *\n", card.type);
+		printf("* %c  *\n", card.type);
 		printf("*   K *\n");
 		printf("*     *\n");
 		printf("*******\n");
@@ -142,23 +140,20 @@ void display(struct Card card)
 
 
 void record_history(struct Player winner, struct Player loser){
-	FILE *append;
-	append = fopen("history.txt","a");
-	
-	time_t t = time(NULL);
-	struct tm tm = *localtime(&t);
+	FILE *append;    // declare a pointer of type file
+	append = fopen("history.txt","a");  // opening a file in standard
   
   	int winner_score=0, loser_score=0;
   	int i;
   	
-  	for(i=0; i<5; i++){
+  	for(i=0; i<5; i++){           // save a history 
   		winner_score += convert_jkq(winner.cards[i]);
   		loser_score += convert_jkq(loser.cards[i]);
 	}
-	fprintf(append, "%s %d : %d %s : %d-%02d-%02d %02d:%02d:%02d %d\n", winner.name, winner_score, loser_score, loser.name, tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec ,money);
+	fprintf(append, "%s %d : %d %s  : %d\n", winner.name, winner_score, loser_score, loser.name, money); // write file
 }
 
-int check_winner(){
+int check_winner(){  // method check who have a more points 
 	if(P1.score > 21){
 		printf("Sum of player's cards now = %d\n\n",P1.score);
 		printf("Computer win!\n");
@@ -175,13 +170,13 @@ int check_winner(){
 	return 0;
 }
 
-int play(void)
+int play(void) // method for play
 {
 	int i;
 	int idx = 0;
 
 	
-	strcpy(P1.name, "Player");
+	strcpy(P1.name, "Player");     //strcyp function copies the string pointed
 	strcpy(P2.name, "Computer");
 	P1.score = 0;
 	P2.score = 0;
@@ -201,16 +196,16 @@ int play(void)
 	fflush(stdin);
 	do{
 	printf("\nEnter an amount you would like to bet.\n");
-	printf("\nYour balance is: %d ",money);
-	printf("\nEnter here: ", money);
+	printf("\nYour balance is:%d ",money);
+	printf("\nEnter here:",money);
 	scanf("%d",&bet);
-		} while (bet > money);
+		} while (bet > money);        //money > bet only 
 	do{
 		go_on = getchar();
 	} while (go_on != '\n');
 	system("cls");
 	
-	shuffle(cards);
+	shuffle(cards); // call a method for play 
 	
 	for(i=0; i<2; i++){
 		pick("P1");
@@ -241,7 +236,7 @@ int play(void)
 		
 		printf("Want more cards? (y/n )");
 		do{
-			j = getchar();
+			j = getchar();   // get char for continue 
 		} while (j!='y' &&j!='n');
 		
 		if (j=='y'){
@@ -251,9 +246,9 @@ int play(void)
 			printf("and your card %d is:\n", P1.number_of_card+1);
 			display(P1.cards[P1.number_of_card]);
 			
-			P1.score += chcek_ace(P1.cards[P1.number_of_card]);
+			P1.score += chcek_ace(P1.cards[P1.number_of_card]); // check ace for chosen value
 			
-			if (check_winner() == 1){
+			if (check_winner() == 1){ // check who win 
 				return 0;
 			}	
 			
@@ -272,11 +267,11 @@ int play(void)
 	if (P2.cards[0].type == 1  && P2.cards[1].type == 1){
 		P2.score = 12;
 		printf("Computer card total now = %d\n\n", P2.score);
-	}else if ((convert_jkq(P2.cards[0])) + (convert_jkq(P2.cards[1])) == 1){
+	}else if ((convert_jkq(P2.cards[0])) + (convert_jkq(P2.cards[1])) == 1){ //if computer 21 computer win
 		P2.score=21;
 		printf("Computer card total now = %d\n\n", P2.score);
 		printf("Computer win!\n");
-		money = money - bet;
+		money = money - bet; //lose your money 
 		record_history(P2, P1);
 		return 1;
 	}else if (P2.cards[0].type ==1 || P2.cards[1].type == 1){
@@ -287,7 +282,8 @@ int play(void)
 		printf("Computer card total now = %d\n\n", P2.score);
 	}
 	
-	while(1){
+	
+	while(1){  //check who get more points 
 		if (P2.score>21 || P1.score>P2.score){
 			printf("Congrats! You win.\n");
 			money = money + bet;
@@ -331,6 +327,7 @@ int play(void)
 int main(void)
 {
 	char play_again;
+
   
 	do{
 		play();
