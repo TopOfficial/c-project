@@ -26,7 +26,6 @@ int shuffle(struct Card cards[]) //SHUFFLES CARD IN THE DECKS
 		desk[i].score = i%13 + 1;
 	}
 		
-	srand(time(NULL)); 
 	for (i = 0; i < 52; i++)
 	{
 		do{
